@@ -1,5 +1,4 @@
 'use client';
-
 import ErrorMessage from '@/app/components/ErrorMessage';
 import Spinner from '@/app/components/Spinner';
 import { issueSchema } from '@/app/validationSchemas';
@@ -41,6 +40,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
       setError('An unexpected error occurred.');
     }
   });
+
 
   return (
     <div className="max-w-xl">
