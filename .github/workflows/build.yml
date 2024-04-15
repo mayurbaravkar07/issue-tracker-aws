@@ -1,7 +1,7 @@
 name: Build on PR
 
 on:
-  push_request:
+  pull_request:
     branches:
       - master
 
@@ -26,3 +26,14 @@ jobs:
       
       - name: Run Build
         run: npm run build
+
+
+
+
+
+
+
+
+
+
+
