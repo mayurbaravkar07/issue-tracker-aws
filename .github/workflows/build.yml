@@ -21,8 +21,8 @@ jobs:
       - name: Generate prisma client
         run: npx prisma generate            
       
-    #  - name: Generate deploy
-    #     run: npx prisma migrate deploy
+     - name: Migrating the files
+        run: npx prisma migrate 
       
       - name: Run Build
         run: npm run build
