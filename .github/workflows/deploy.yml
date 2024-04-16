@@ -19,10 +19,10 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t my-image:latest .
+        run: docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t issue-tracker-aws  .
 
       - name: Push Docker image
-        run: docker push my-image:latest
+        run: docker push mayurbaravkar07/issue-tracker-aws:latest
 
       - name: Deploy to EC2
         uses: appleboy/ssh-action@master
@@ -31,7 +31,7 @@ jobs:
           username: ${{ secrets.SSH_USERNAME }}
           key: ${{ secrets.SSH_KEY }}
           script: |
-            sudo docker pull mayurbaravkar07/my-image:latest
-            sudo docker stop my-image || true
-            sudo docker rm my-image || true
-            sudo docker run -e DATABASE_URL="${{ secrets.DATABASE_URL }}" --restart=always -d --name my-image -p 3000:3000 mayurbaravkar07/my-image:latest
+            sudo docker pull mayurbaravkar07/issue-tracker-aws:latest
+            sudo docker stop issue-tracker-aws || true
+            sudo docker rm issue-tracker-aws || true
+            sudo docker run -e DATABASE_URL="${{ secrets.DATABASE_URL }}" --restart=always -d --name issue-tracker-aws -p 3000:3000 mayurbaravkar07/issue-tracker-aws:latest
