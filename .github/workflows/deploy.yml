@@ -19,7 +19,7 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
 
       - name: Build Docker image
-        run: docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t issue-tracker-aws:latest .
+        run: docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t mayurbaravkar07/issue-tracker-aws:latest .
 
       - name: Push Docker image
         run: docker push mayurbaravkar07/issue-tracker-aws:latest
