@@ -3,7 +3,7 @@ name: Build and Deploy to Docker Hub
 on:
   push:
     branches:
-      - master  # Adjusted to trigger on pushes to master
+      - master
 
 jobs:
   build-and-push:
@@ -21,16 +21,11 @@ jobs:
     - name: Prepare Dockerfile
       run: echo "Preparing Dockerfile"
 
-    - name: Build and Push Docker image
-      uses: docker/build-push-action@v2
-      with:
-        context: .
-        file: ./Dockerfile
-        push: true
-        tags: mayurbaravkar07/issue-tracker-aws:latest
+    - name: Build Docker image
+      run: docker build --build-arg DATABASE_URL="${{ secrets.DATABASE_URL }}" -t my-image .
 
-    - name: Verify Pushed Image 
-      run: docker pull mayurbaravkar07/issue-tracker-aws:latest
+    - name: Push Docker image
+      run: docker push my-image
 
     - name: Deploy to EC2
       uses: appleboy/ssh-action@master
@@ -39,10 +34,7 @@ jobs:
         username: ${{ secrets.SSH_USERNAME }}
         key: ${{ secrets.SSH_KEY }}
         script: |
-          sudo docker pull mayurbaravkar07/issue-tracker-aws:latest
+          sudo docker pull my-image
           sudo docker stop issue-tracker-aws || true
           sudo docker rm issue-tracker-aws || true
-          sudo docker run -e DATABASE_URL="${{ secrets.DATABASE_URL }}" --restart=always -d --name issue-tracker-aws -p 3000:3000 mayurbaravkar07/issue-tracker-aws:latest
-
-
-          
+          sudo docker run -e DATABASE_URL="${{ secrets.DATABASE_URL }}" --restart=always -d --name issue-tracker-aws -p 3000:3000 my-image
