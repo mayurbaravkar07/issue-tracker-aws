@@ -13,6 +13,10 @@ RUN npm install
 
 # Copy the rest of the application code
 COPY . .
+
+ARG DATABASE_URL
+ENV DATABASE_URL=$DATABASE_URL
+
 RUN npx prisma generate
 # Build the Next.js application
 RUN npm run build
